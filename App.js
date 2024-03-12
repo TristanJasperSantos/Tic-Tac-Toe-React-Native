@@ -34,17 +34,20 @@ const App = () => {
   const [playerTurn, setPlayerTurn] = useState('X');
 
   const resetBoard = ()=>{
+    setWin(false)
     setxAnswers([])
     setoAnswers([])
-
     setBoard(initialState)
     setPlayerTurn('X')
-    setWin(false)
+    console.log(win)
+    
   }
   const modalHandle = ()=>{
+    setWin(false)
     console.log('hide')
     setisVisible(false)
     resetBoard()
+    console.log(win)
   }
   const pressHandle = (item)=> {
     let updatedboard = []
@@ -74,28 +77,35 @@ const App = () => {
     }
   }
   useEffect(()=>{
-    combi.map((item)=>{
-      if (JSON.stringify(xAnswers) === JSON.stringify(item)){
-        console.log('xwins')
-        setWin(true)
+    console.log(xAnswers)
+    console.log(oAnswers)
+    if (board != initialState) {
+      console.log('useeffect working')
+      
 
-      }
-    })
-    combi.map((item)=>{
-      if (JSON.stringify(oAnswers) === JSON.stringify(item)){
-        console.log('owins')
-        setWin(true)
-      }
-    })
+      combi.map((item)=>{
+        if (item.every( element => xAnswers.includes(element))){
+          console.log('xwins')
+          setWin( prevState => !prevState)
+        }
+      }) 
+      
+      combi.map((item)=>{
+        if (item.every( element => oAnswers.includes(element))){
+          console.log('xwins')
+          setWin( prevState => !prevState)
+        }
+      })
+    }
    },[board])
 
    useEffect(()=>{
     if (win) {
+      console.log(win)
       setisVisible(true)
     }
    },[win])
-  console.log(isVisible)
-  console.log(win)
+  
     return (
         <View style={styles.container}>
           <Modal
